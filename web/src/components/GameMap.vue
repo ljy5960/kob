@@ -1,0 +1,33 @@
+<template>
+<div ref="parent" class="gamemap">
+    <canvas ref="canvas"></canvas>
+</div>
+</template>
+<script>
+import { GameMap } from '@/assets/scripts/GameMap';
+import { ref , onMounted} from 'vue'
+export default{
+    setup(){
+        // canva的引入
+    let parent = ref (null);//指向
+    let canvas = ref (null);//指向
+    onMounted(()=>{
+        //挂载后创建对象
+    new GameMap(canvas.value.getContext('2d'),parent.value)
+    });
+    return {
+        parent,
+        canvas
+    }
+    }
+}
+</script>
+<style scoped>
+.gamemap{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
