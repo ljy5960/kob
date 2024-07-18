@@ -19,7 +19,7 @@ export class GameMap extends AcgAameObject{
     let dx=[-1,0,1,0], dy=[0,1,0,-1];
     for(let i=0;i<4;i++){
         let x=sx+dx[i],y=sy+dy[i];
-        if(!g[x][y]&&this.check_connectivity(g,x,y,tx,ty)){
+        if(!g[x][y] && this.check_connectivity(g,x,y,tx,ty)){
             return true;
         }
     }
@@ -45,9 +45,7 @@ export class GameMap extends AcgAameObject{
     //创建随机障碍物
     for(let i=0;i<this.inner_walls_count/2;i++){
         for( let j=0;j<1000;j++){
-            //let r=parseInt(Math.random()*this.rows);
             let r=parseInt(Math.random()*this.rows);
-           // let c=parseInt(Math.random()*this.cols);
             let c=parseInt(Math.random()*this.cols);
             if(g[r][c]||g[c][r]) continue;
             if(r==this.rows-2&&c==1||r==1&&c==this.cols-2){
@@ -58,7 +56,7 @@ export class GameMap extends AcgAameObject{
         }
     }
     const copy_g=JSON.parse(JSON.stringify(g));
-    if(!this.check_connectivity(copy_g,this.rows-2,1,1,this.cols-2)) return false;
+    if(!this.check_connectivity(copy_g,this.rows-2,1,1,this.cols-2)){ return false;}
 
     for(let r=0;r<this.rows;r++){
         for(let c=0;c<this.cols;c++){
@@ -75,7 +73,6 @@ export class GameMap extends AcgAameObject{
             break;
         }
     }
-    this.create_walls();
     }
     update_size(){
         //clientWidth和clientHeight是用来求div的长和宽
@@ -101,4 +98,5 @@ export class GameMap extends AcgAameObject{
             }
         }
     }
+
 }
