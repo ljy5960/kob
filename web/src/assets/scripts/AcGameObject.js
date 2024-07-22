@@ -28,11 +28,13 @@ export  class AcgAameObject{
 }
 let last_timestamp;//上一次执行的时刻
 //timestamp是当前函数执行的时刻
+//timestamp是浏览器传入的
 const step =timestamp=>{
+    
     //因此，虽然 GameMap 类在实例化时只执行了构造函数和可能的初始化方法（如 start 方法），
     //但是 requestAnimationFrame 的执行不是由对象实例化过程决定的，而是由开发者显式调用。
     //通常情况下，requestAnimationFrame 是作为整个应用或游戏引擎的主循环中的一部分来使用的，用来管理和驱动所有游戏对象的更新和渲染过程。
-    //of 是值 in是下标
+    //of 是值 in是下标  
     for(let obj of AC_GAME_OBJECTS){
      if(!obj.has_called_start){
         obj.has_called_start=true;
