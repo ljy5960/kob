@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/pk/")
 public class IndexController {
     @RequestMapping("index.html")
-    public String index(){return "0";}
+    public String index(){return "index.html";}
 }

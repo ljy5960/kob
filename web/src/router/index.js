@@ -4,6 +4,8 @@ import PkIndexView from "@/views/pk/PkIndexView.vue"
 import RankListIndexView from "@/views/ranklist/RankListIndexView.vue"
 import RecordIndexView from "@/views/record/RecordIndexView.vue"
 import UserBotIndexView from "@/views/user/bots/UserBotIndexView.vue"
+import UserAccountLoginView from '@/views/user/account/UserAccountLoginView.vue'
+import UserAccountRegisterView from '@/views/user/account/UserAccountRegisterView.vue'
 const routes = [
   {
     path:"/pk/",
@@ -34,6 +36,16 @@ const routes = [
     path:"/",
     name:"home",
     redirect:"/pk/",
+  },
+  {
+    path:"/user/account/register/",
+    name:"user_account_register",
+    component:UserAccountRegisterView,
+  },
+  {
+    path:"/user/account/login/",
+    name:"user_account_login",
+    component:UserAccountLoginView,
   },
   {
     path:"/:catchAll(.*)",
