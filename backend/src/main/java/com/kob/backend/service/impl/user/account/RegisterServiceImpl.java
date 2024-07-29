@@ -22,10 +22,10 @@ public class RegisterServiceImpl implements RegisterService {
         Map<String,String>map=new HashMap<>();
         if(username==null){
             map.put("error_message","用户名不能为空");
-            return  map;
+            return map;
         }
         if(password==null||confirmedPassword==null){
-            map.put("error_message","密度不能为空");
+            map.put("error_message","密码不能为空");
             return map;
         }
         username=username.trim();
@@ -37,11 +37,12 @@ public class RegisterServiceImpl implements RegisterService {
             map.put("error_message","密码不能为空");
             return  map;
         }
-        if(username.length()>100){
-            map.put("error_message","用户名长度不能大于100");
+        if(username.length()>11){
+            map.put("error_message","用户名长度过长");
+            return map;
         }
-        if(password.length()>100||confirmedPassword.length()>100){
-            map.put("error_message","密码长度大于100");
+        if(password.length()>18||confirmedPassword.length()>18){
+            map.put("error_message","密码长度过长");
             return  map;
         }
         if(!password.equals(confirmedPassword)){

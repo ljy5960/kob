@@ -1,5 +1,5 @@
 <template>
-    <ContentField>
+    <ContentField  v-if="!$store.state.user.pulling_info">
        <div class="row justify-content-md-center">
         <div class="col-3">
            <form @submit.prevent="login"><!--@submit.prevent="login" 将submit与login函数绑到一起prevent阻止默认行为-->
@@ -33,21 +33,41 @@
         components:{
             ContentField
         },
-        setup(){
+        setup(){//修改state的值就写入router user
         const store =useStore();
         let username =ref('');
         let password =ref('');
         let error_message=ref('');
+        const jwt_token=localStorage.getItem("jwt_token");
+        if(jwt_token){
+            //调用mutations函数使用commit
+            //调用action函数用dispatch
+            store.commit("updateToken",jwt_token);
+            store.dispatch("getinfo",{
+                success(){
+                router.push({name:"home"});
+                store.commit("updatePullingInfo",false);
+                },
+                error(){
+                    store.commit("updatePullingInfo",false);
+                }
+            })
+  
+        }else{
+            store.commit("updatePullingInfo",false);
+        }
+
         const login = () =>{//箭头函数
         error_message.value=""
         store.dispatch("login",{
             username:username.value,
             password:password.value,
             success(){
+                //调用mutations函数使用commit
+                //调用action函数用dispatch
                 store.dispatch("getinfo",{
                     success(){
                         router.push({name:'home'});
-                        console.log(store.state.user);
                     }
                 })
             },

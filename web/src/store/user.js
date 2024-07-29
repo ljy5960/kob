@@ -6,6 +6,7 @@ export default{
         photo:"",
         token:"",
         is_login:false,
+        pulling_info:true,//是否正在从云端拉取信息
     },
     getters: {
     },
@@ -25,6 +26,9 @@ export default{
             state.photo="";
             state.token="";
             state.is_login=false;
+        },
+        updatePullingInfo(state,pulling_info){
+            state.pulling_info=pulling_info;
         }
     },
     actions: {
@@ -49,8 +53,12 @@ export default{
         //    data.success和data.error：分别在请求成功和失败时调用的回调函数。
             success(resp){
                 if(resp.error_message==="success"){
+                    localStorage.setItem("jwt_token",resp.token);
+                    //调用mutations函数使用commit
+                    //调用action函数用dispatch
                     context.commit("updateToken",resp.token);//调用函数用字符串调用，更新token
                     data.success(resp);
+                    //调用该函数时需要将两个回调函数传入
                      //回调函数将结果回调给调用者
                 }else{
                     data.error(resp);
@@ -86,7 +94,8 @@ export default{
             })
         },
         logout(context){
-         context.commit("logout");
+        localStorage.removeItem("jwt_token");
+        context.commit("logout");
         }
     },
     modules: {
