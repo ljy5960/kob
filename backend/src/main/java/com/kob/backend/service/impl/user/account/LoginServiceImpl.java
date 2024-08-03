@@ -23,7 +23,7 @@ public class LoginServiceImpl implements LoginService {
     public Map<String, String> getToken(String username, String password) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(username,password);//将username和password封装
-
+        //检测是否登录
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);  //如果登录失败，自动处理
 
         UserDetailsImpl loginUser  = (UserDetailsImpl) authenticate.getPrincipal();//取用户

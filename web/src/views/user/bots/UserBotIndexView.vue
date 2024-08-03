@@ -79,7 +79,7 @@
                                     <button type="button" class="btn btn-secondary" style="margin-right: 10px;"
                                         data-bs-toggle="modal"
                                         :data-bs-target="'#update-bot-modal-' + bot.id">修改</button>
-                                    <button type="button" class="btn btn-danger" @click="remove_bot(bot)">删除</button>
+                                    <button type="button" class="btn btn-danger" @click="delete_bot(bot)">删除</button>
 
                                     <div class="modal fade" :id="'update-bot-modal-' + bot.id" tabindex="-1">
                                         <div class="modal-dialog modal-xl">

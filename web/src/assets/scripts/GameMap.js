@@ -3,10 +3,11 @@ import { Snake } from "./Snake";
 import { Wall } from "./Wall";
 //import导包时export后有default就不加{}没有就加，default一个函数里只有一个
 export class GameMap extends AcgAameObject{
-    constructor(ctx,parent){//ctx是画布parent是父元素
+    constructor(ctx,parent,store){//ctx是画布parent是父元素
         super();//调用父类的构造函数
         this.ctx=ctx;
         this.parent=parent;
+        this.store=store;
         this.L=0;
 
         this.rows=13;
@@ -18,51 +19,8 @@ export class GameMap extends AcgAameObject{
             new Snake({id: 1,color:"#F94848",r:1,c:this.cols-2},this),
         ]}
 
-    check_connectivity(g,sx,sy,tx,ty){
-    if(sx==tx&&sy==ty) return true;
-    g[sx][sy]=true;
-    let dx=[-1,0,1,0], dy=[0,1,0,-1];
-    for(let i=0;i<4;i++){
-        let x=sx+dx[i],y=sy+dy[i];
-        if(!g[x][y] && this.check_connectivity(g,x,y,tx,ty)){
-            return true;
-        }
-    }
-    return false;
-    }
-
-    create_walls(){
-        //开墙数组判断有无墙
-    const g=[];
-    for(let r=0;r<this.rows;r++){
-        g[r]=[]
-        for(let c=0;c<this.cols;c++){
-          g[r][c]=false;
-        }
-    }
-    //给四周加上墙
-    for(let r=0;r<this.rows;r++){
-        g[r][0]=g[r][this.cols-1]=true;
-
-    }
-    for(let c=0;c<this.cols;c++){
-       g[0][c]=g[this.rows-1][c]=true;
-    }
-    //创建随机障碍物
-    for(let i=0;i<this.inner_walls_count/2;i++){
-        for( let j=0;j<1000;j++){
-            let r=parseInt(Math.random()*this.rows);
-            let c=parseInt(Math.random()*this.cols);
-            if(g[r][c]||g[this.rows-1-r][this.cols-1-c]) continue;
-            if(r==this.rows-2&&c==1||r==1&&c==this.cols-2){
-                continue;
-            }
-            g[r][c]=g[this.rows-1-r][this.cols-1-c]=true;
-            break;
-        }
-    }
-    const copy_g=JSON.parse(JSON.stringify(g));
-    if(!this.check_connectivity(copy_g,this.rows-2,1,1,this.cols-2)){ return false;}
+   create_walls(){
+    const g=this.store.state.pk.gamemap;
 
     for(let r=0;r<this.rows;r++){
         for(let c=0;c<this.cols;c++){
@@ -71,8 +29,7 @@ export class GameMap extends AcgAameObject{
             }
         }
     }
-    return true;
-    }
+}
 
     add_listening_events(){
        this.ctx.canvas.focus();
@@ -90,11 +47,7 @@ export class GameMap extends AcgAameObject{
     }
 
     start(){//重写
-    for(let i=0;i<1000;i++){
-        if(this.create_walls()){
-            break;
-        }
-    }
+    this.create_walls();
     this.add_listening_events();
     }
 

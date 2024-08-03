@@ -1,6 +1,6 @@
 <template>
-<NavBar></NavBar>
-  <router-view> </router-view>
+  <NavBar></NavBar>
+  <router-view> </router-view><!-- 动态渲染 -->
 </template>
 
 <script>
