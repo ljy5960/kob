@@ -10,13 +10,14 @@ import { useStore } from 'vuex';
 export default{
     setup(){
         // canva的引入
-        const store=useStore();
+    const store=useStore();
     let parent = ref (null);//指向
     let canvas = ref (null);//指向
     onMounted(()=>{
         //挂载后创建对象
-    new GameMap(canvas.value.getContext('2d'),parent.value,store);
-    });
+    store.commit("updateGameObject",
+    new GameMap(canvas.value.getContext('2d'),parent.value,store));
+});
     return {
         parent,
         canvas

@@ -3,11 +3,10 @@ package com.kob.backend.consumer;
 import com.alibaba.fastjson.JSONObject;
 import com.kob.backend.consumer.utils.Game;
 import com.kob.backend.consumer.utils.JwtAuthentication;
+import com.kob.backend.mapper.RecordMapper;
 import com.kob.backend.mapper.UserMapper;
 import com.kob.backend.pojo.User;
-import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import jakarta.websocket.*;
@@ -23,7 +22,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @ServerEndpoint("/websocket/{token}")  // 注意不要以'/'结尾
 public class WebSocketServer {
 
-    private static ConcurrentHashMap<Integer,WebSocketServer> users=new ConcurrentHashMap<>();//存储所有链接给最后发给前端,存储每个链接对应的是谁
+    public static ConcurrentHashMap<Integer,WebSocketServer> users=new ConcurrentHashMap<>();//存储所有链接给最后发给前端,存储每个链接对应的是谁
 
     private static final CopyOnWriteArraySet<User> matchpool=new CopyOnWriteArraySet<>();
     //CopyOnWriteArraySet<User> 是 Java 中一个线程安全的集合类。它是 CopyOnWriteArraySet 的一个具体实例，其中包含 User 类型的元素。
@@ -32,11 +31,16 @@ public class WebSocketServer {
     private Session session=null;//用session维护
 
     private static UserMapper userMapper;
+    public static RecordMapper recordMapper;
     private Game game=null;
     @Autowired//注入sql操作,多例模式（单例模式指一个类同一时间只能有一个实例），此处每有一个新链接就有一个实例
     public void setUserMapper(UserMapper userMapper){
         //静态变量访问要用类名访问
         WebSocketServer.userMapper=userMapper;
+    }
+    @Autowired
+    public void setRecordMapper(RecordMapper recordMapper){
+        WebSocketServer.recordMapper=recordMapper;
     }
     @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) throws IOException {
@@ -70,19 +74,30 @@ public class WebSocketServer {
             User a=it.next(),b=it.next();
             matchpool.remove(a);
             matchpool.remove(b);
-            Game game=new Game(13,14,20);
+            Game game=new Game(13,14,20,a.getId(),b.getId());
             game.createMap();
+            users.get(a.getId()).game=game;
+            users.get(b.getId()).game=game;
+            game.start();
+            JSONObject respGame=new JSONObject();
+            respGame.put("a_id",game.getPlayerA().getId());
+            respGame.put("a_sx",game.getPlayerA().getSx());
+            respGame.put("a_sy",game.getPlayerA().getSy());
+            respGame.put("b_id",game.getPlayerB().getId());
+            respGame.put("b_sx",game.getPlayerB().getSx());
+            respGame.put("b_sy",game.getPlayerB().getSy());
+            respGame.put("map",game.getG());
             JSONObject respA=new JSONObject();
             respA.put("event","start-matching");
             respA.put("opponent_username",b.getUsername());
             respA.put("opponent_photo",b.getPhoto());
-            respA.put("map",game.getG());
+            respA.put("game",respGame);
             users.get(a.getId()).sendMessage(respA.toJSONString());
             JSONObject respB=new JSONObject();
             respB.put("event","start-matching");
             respB.put("opponent_username",a.getUsername());
             respB.put("opponent_photo",a.getPhoto());
-            respB.put("map",game.getG());
+            respB.put("game",respGame);
             users.get(b.getId()).sendMessage(respB.toJSONString());
 
         }
@@ -90,6 +105,13 @@ public class WebSocketServer {
     private void stopMatching(){
         System.out.println("stop");
         matchpool.remove(this.user);
+    }
+    private void move(int direction){
+        if(game.getPlayerA().getId().equals(user.getId())){
+            game.setNextStepA(direction);
+        }else if(game.getPlayerB().getId().equals(user.getId())){
+            game.setNextStepB(direction);
+        }
     }
     @OnMessage
     public void onMessage(String message, Session session) {//当路由就是做判断
@@ -101,9 +123,10 @@ public class WebSocketServer {
             startMatching();
         } else if ("stop-matching".equals(event)) {
             stopMatching();
+        }else if("move".equals(event)){
+            move(data.getInteger("direction"));
         }
     }
-
     @OnError
     public void onError(Session session, Throwable error) {
         error.printStackTrace();
