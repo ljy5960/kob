@@ -2,7 +2,10 @@ package com.kob.backend.consumer.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kob.backend.consumer.WebSocketServer;
+import com.kob.backend.pojo.Bot;
 import com.kob.backend.pojo.Record;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,17 +26,30 @@ public class Game extends Thread {
     // 对于类中的final成员变量，它们必须在声明时或在构造方法中进行初始化。一旦在构造方法中初始化之后，就不能再被修改。
     private Integer nextStepA = null;
     private Integer nextStepB = null;
-    private ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
     private String status = "playing";//存储整个游戏状态playing表示正在进行，finished表示游戏结束
     private String loser = "";//all平局，A：A输，B：B输
+    private final static String addBoturl="http://127.0.0.1:6060/bot/add/";
 
-    public Game(Integer rows, Integer cols, Integer inner_walls_count, Integer idA, Integer idB) {
+    public Game(Integer rows, Integer cols, Integer inner_walls_count, Integer idA, Bot botA, Integer idB,Bot botB) {
         this.rows = rows;
         this.cols = cols;
         this.inner_walls_count = inner_walls_count;
         this.g = new int[rows][cols];
-        playerA = new Player(idA, rows - 2, 1, new ArrayList<>());
-        playerB = new Player(idB, 1, cols - 2, new ArrayList<>());
+        Integer botIdA=-1;
+        Integer botIdB=-1;
+        String botCodeA=null;
+        String botCodeB=null;
+        if(botA!=null){
+            botIdA=botA.getId();
+            botCodeA=botA.getContent();
+        }
+        if(botB!=null){
+            botIdB=botB.getId();
+            botCodeB=botB.getContent();
+        }
+        playerA = new Player(idA,botIdA,botCodeA, rows - 2, 1, new ArrayList<>());
+        playerB = new Player(idB,botIdB,botCodeB, 1, cols - 2, new ArrayList<>());
     }
 
     public Player getPlayerA() {
@@ -115,6 +131,27 @@ public class Game extends Thread {
             if (draw()) break;
         }
     }
+    private String getInput(Player player){//将当前的局面信息编码成字符串
+     //地图#me.sx#sy#操作，#对手的起始坐标#对手操作
+        Player me,you;
+        if(playerA.getId().equals(player.getId())){
+            me=playerA;
+            you=playerB;
+        }else {
+            me=playerB;
+            you=playerA;
+        }
+        return getMapString()+"#"+me.getSx()+"#"+me.getSy()+"#("+me.getStepsString()+")#"+
+                you.getSx()+"#"+you.getSy()+"#("+you.getStepsString()+")";
+    }
+    private void sendBotCode(Player player){
+    if(player.getBotId().equals(-1)) return;
+    MultiValueMap<String,String> data=new LinkedMultiValueMap<>();
+    data.add("user_id",player.getId().toString());
+    data.add("bot_code",player.getBotCode());
+    data.add("input",getInput(player));
+    WebSocketServer.restTemplate.postForObject(addBoturl,data,String.class);
+    }
 
     private boolean nextstep() {//等待两名玩家的下一步操作
         try {
@@ -122,6 +159,8 @@ public class Game extends Thread {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        sendBotCode(playerA);
+        sendBotCode(playerB);
         for (int i = 0; i < 50; i++) {
             try {
                 Thread.sleep(100);
@@ -224,6 +263,11 @@ public class Game extends Thread {
     }
     @Override
     public void run() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         for (int i = 0; i < 1000; i++) {
             if (nextstep()) {//是否获取了两条蛇的下一步操作
                 judge();

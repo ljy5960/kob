@@ -16,6 +16,9 @@
                         <input v-model="confirmedPassword" type="password" class="form-control" id="confirmedPassword" placeholder="请再次输入密码">
                       </div>
                     <div class="error-message">{{ error_message }}</div>
+                    <div class="mb-3">
+                        <router-link :to="{name:'user_account_login'}">去登陆</router-link>
+                    </div>
                     <button type="submit" class="btn btn-primary">注册</button>
                  </form>
             </div>

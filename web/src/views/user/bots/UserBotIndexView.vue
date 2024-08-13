@@ -168,6 +168,7 @@ export default {
             content: "",
             error_message: "",
         })
+        
         const refresh_bots = () => {
             $.ajax({
                 url: "http://localhost:9090/user/bot/getlist/",
