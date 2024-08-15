@@ -37,7 +37,8 @@ public class Consumer extends Thread{
     public void run() {
         UUID uuid=UUID.randomUUID();
         String uid=uuid.toString().substring(0,8);
-        BotInterface botInterface= Reflect.compile(//动态编译代码,类名相同只执行一次
+        BotInterface botInterface= Reflect.compile(//动态编译代码,类名相同只执行一次这是动态生成的类名，
+                // 包含了包路径 com.kob.botrunningsystem.utils 和类名 Bot，后面拼接了一个 uid，这使得类名对每个用户或每个实例都是唯一的。
                 "com.kob.botrunningsystem.utils.Bot"+uid,//名字段
                 addUid(bot.getBotCode(),uid)//代码端
         ).create().get();

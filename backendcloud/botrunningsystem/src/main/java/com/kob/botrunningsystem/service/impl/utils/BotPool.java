@@ -1,6 +1,5 @@
 package com.kob.botrunningsystem.service.impl.utils;
 
-import com.kob.botrunningsystem.service.impl.utils.Bot;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -26,11 +25,6 @@ public class BotPool extends Thread{
     }
     @Override
     public void run() {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         while (true){
             lock.lock();
             if(bots.isEmpty()){

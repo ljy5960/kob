@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import Moduleuser from '@/store/user'
 import ModulePK from '@/store/pk'
+import ModuleRecord from '@/store/record'
 export default createStore({
   state: {//存储全局变量
   },
@@ -15,5 +16,6 @@ export default createStore({
   modules: {//将state进行分割
     user:Moduleuser,
     pk:ModulePK,
+    record:ModuleRecord,
   }
 })

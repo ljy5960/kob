@@ -33,7 +33,7 @@ public class WebSocketServer {
     private User user;//用户信息
     private Session session=null;//用session维护
 
-    private static UserMapper userMapper;
+    public static UserMapper userMapper;
     public static RecordMapper recordMapper;
     private static BotMapper botMapper;
     public static RestTemplate restTemplate;

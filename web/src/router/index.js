@@ -6,6 +6,7 @@ import RecordIndexView from "@/views/record/RecordIndexView.vue"
 import UserBotIndexView from "@/views/user/bots/UserBotIndexView.vue"
 import UserAccountLoginView from '@/views/user/account/UserAccountLoginView.vue'
 import UserAccountRegisterView from '@/views/user/account/UserAccountRegisterView.vue'
+import RecordContentView from '@/views/record/RecordContentView.vue'
 import store from '@/store'
 const routes = [
   {
@@ -19,7 +20,15 @@ const routes = [
   {
     path:"/record/",
     name:"record_index",
-    component:RankListIndexView,
+    component:RecordIndexView,
+    meta:{
+      requestAuth:true
+    }
+  },
+  {
+    path:"/record/:recordId/",
+    name:"record_content",
+    component:RecordContentView,
     meta:{
       requestAuth:true
     }
@@ -27,7 +36,7 @@ const routes = [
   {
     path:"/ranklist/",
     name:"ranklist_index",
-    component:RecordIndexView,
+    component:RankListIndexView,
     meta:{
       requestAuth:true
     }
@@ -75,7 +84,7 @@ const routes = [
   {
     path:"/:catchAll(.*)",
     redirect:"/404/",
-  }
+  },
 ]
 
 const router = createRouter({

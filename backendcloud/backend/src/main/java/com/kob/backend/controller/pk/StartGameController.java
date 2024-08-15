@@ -15,6 +15,7 @@ public class StartGameController {
     private StartGameService startGameService;
     @PostMapping("/pk/start/game/")
     public String startGame(@RequestParam MultiValueMap<String,String> data){
+        //只有在RestTemplate的通信中才用MultiValueMap<String,String> data=new LinkedMultiValueMap<>();
         Integer aId=Integer.parseInt(Objects.requireNonNull(data.getFirst("a_id")));
         Integer aBotId=Integer.parseInt(Objects.requireNonNull(data.getFirst("a_bot_id")));
         Integer bId=Integer.parseInt(Objects.requireNonNull(data.getFirst("b_id")));
