@@ -13,7 +13,7 @@ import java.util.Map;
 public class GetRankListController {
     @Autowired
     private GetRankListService getRankListService;
-    @GetMapping("/ranklist/getlist/")
+    @GetMapping("/api/ranklist/getlist/")
     public JSONObject getList(@RequestParam Map<String,String> data){
         //只有在RestTemplate的通信中才用MultiValueMap<String,String> data=new LinkedMultiValueMap<>();
         Integer page=Integer.parseInt(data.get("page"));

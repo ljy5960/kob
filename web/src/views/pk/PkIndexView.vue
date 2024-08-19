@@ -1,7 +1,9 @@
 <template>
+    <div class="user-color" v-if="$store.state.pk.status==='playing'&&parseInt($store.state.user.id)===parseInt($store.state.pk.a_id)">左下角</div>
+    <div class="user-color" v-if="$store.state.pk.status==='playing'&&parseInt($store.state.user.id)===parseInt($store.state.pk.b_id)">右上角</div>
     <PlayGround v-if="$store.state.pk.status==='playing'"></PlayGround>
     <MatchGround v-if="$store.state.pk.status==='matching'"></MatchGround>
-    <ResultBoard></ResultBoard>
+    <ResultBoard v-if="$store.state.pk.loser!='none'"> </ResultBoard>
     <!-- 在template中使用全局变量用$,在js中去掉$ -->
 </template>
 <script>
@@ -19,7 +21,7 @@ export default{
     },
     setup(){
     const store=useStore();
-    const socketurl=`ws://localhost:9090/websocket/${store.state.user.token}/`
+    const socketurl=`wss://app6957.acapp.acwing.com.cn/websocket/${store.state.user.token}/`
     let socket=null;
     store.commit("updateLoser","none");
     store.commit("updateIsRecord",false);
@@ -75,4 +77,10 @@ export default{
 }
 </script>
 <style scoped>
+.user-color{
+    text-align: center;
+    color: white;
+    font-size: 30px;
+    font-weight: 600;;
+}
 </style>

@@ -90,7 +90,7 @@
             const pull_page=page=>{
                 current_page=page;
                 $.ajax({
-                    url:"http://127.0.0.1:9090/record/getlist/",
+                    url:"https://app6957.acapp.acwing.com.cn/api/record/getlist/",
                     data:{
                         page,
                     },

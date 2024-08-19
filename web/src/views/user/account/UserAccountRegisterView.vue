@@ -43,7 +43,7 @@
        const register=()=>{
         error_message.value="";
         $.ajax({
-            url:"http://localhost:9090/user/account/register/",
+            url:"https://app6957.acapp.acwing.com.cn/api/user/account/register/",
             type:"post",
             data:{
            username:username.value,

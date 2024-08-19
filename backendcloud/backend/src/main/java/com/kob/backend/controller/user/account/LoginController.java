@@ -15,7 +15,7 @@ public class LoginController {
 //service里写一个接口
     //service里写一个实现
     //再在controller中写一个类
-    @PostMapping("/user/account/token/")
+    @PostMapping("/api/user/account/token/")
     public Map<String,String> getToken(@RequestParam Map<String,String> map){
         String username=map.get("username");
         String password=map.get("password");

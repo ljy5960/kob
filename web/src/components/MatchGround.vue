@@ -57,7 +57,7 @@
 
         const refresh_bots = () => {
             $.ajax({
-                url: "http://localhost:9090/user/bot/getlist/",
+                url: "https://app6957.acapp.acwing.com.cn/api/user/bot/getlist/",
                 type: "get",
                 headers: {
                     Authorization: "Bearer " + store.state.user.token,
