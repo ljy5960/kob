@@ -35,16 +35,19 @@ export default{
     width: 30vw;
     background-color: rgba(50, 50, 50,0.5);
     position: absolute;
-    top: 30vh;
-    left: 68vh;
-    font-style:normal;
-    padding-top: 5vh;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 .result{
     text-align: center;
     font-size: 50px;
     color: white;
     font-weight: 600;
+    font-style:normal;
+    padding-top: 5vh;
 }
 .result-button{
     text-align: center;

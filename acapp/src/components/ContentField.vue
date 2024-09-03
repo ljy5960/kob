@@ -1,15 +1,12 @@
 <template>
-    <div class="container content-feild">
-        <div class="card">
-            <div class="card-body">
-                <slot></slot>    
-            </div>
-        </div>
+    <div class="content-feild">
+        <slot></slot>    
     </div>
 </template>
 <script></script>
 <style scoped>
 .content-feild{
-    margin-top: 20px;
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -6,7 +6,7 @@
       <RecordContentView v-else-if="$store.state.router.router_name==='record_content'"></RecordContentView>
       <RecordIndexView v-else-if="$store.state.router.router_name==='record'"></RecordIndexView>
       <UserBotIndexView v-else-if="$store.state.router.router_name==='user_bot'"></UserBotIndexView>
-  </div>
+    </div>
 </template>
 
 <script>

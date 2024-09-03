@@ -31,7 +31,6 @@ export default{
     onMounted(()=>{
     socket=new WebSocket(socketurl);
     socket.onopen=()=>{
-        console.log("connected!");
         store.commit("updateSocket",socket);
         store.commit("updateOpponent",{
             username:"我的对手",
@@ -50,7 +49,6 @@ export default{
          },2000)
          store.commit("updateGame",data.game);
          }else if(data.event==="move"){
-            console.log(data);
          const game=store.state.pk.gameObject;
          const [snake0,snake1]=game.snakes;
          snake0.set_direction(data.a_direction);
@@ -68,7 +66,6 @@ export default{
          }
     }
     socket.onclose=()=>{
-        console.log("disconnected!");
     }
     });
     onUnmounted(()=>{
@@ -85,5 +82,9 @@ export default{
     color: white;
     font-size: 30px;
     font-weight: 600;;
+    position: absolute;
+    bottom: 5vh;
+    width: 100%;
+    text-align: center;
 }
 </style>
