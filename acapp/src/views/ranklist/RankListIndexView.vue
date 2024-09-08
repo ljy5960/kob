@@ -11,7 +11,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="user in users" :key="user.id">
-                            <td class="game-table-username">
+                            <td>
                                 <img :src="user.photo" alt="" class="record-user-photo">
                                 <!-- nbsp是空格 -->
                                 &nbsp;
@@ -83,7 +83,7 @@
             const pull_page=page=>{
                 current_page=page;
                 $.ajax({
-                    url:"https://app6957.acapp.acwing.com.cn/api/ranklist/getlist/",
+                    url:"https://www.ljy5960.cn/api/ranklist/getlist/",
                     data:{
                         page,
                     },

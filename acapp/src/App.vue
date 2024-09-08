@@ -1,12 +1,14 @@
 <template>
+  <div class="window">
     <div class="game-body">
-      <MenuView v-if="$store.state.router.router_name==='menu'"></MenuView>
-      <PkIndexView v-else-if="$store.state.router.router_name==='pk'"></PkIndexView>
-      <RankListIndexView v-else-if="$store.state.router.router_name==='ranklist'"></RankListIndexView>
-      <RecordContentView v-else-if="$store.state.router.router_name==='record_content'"></RecordContentView>
-      <RecordIndexView v-else-if="$store.state.router.router_name==='record'"></RecordIndexView>
-      <UserBotIndexView v-else-if="$store.state.router.router_name==='user_bot'"></UserBotIndexView>
-    </div>
+    <MenuView v-if="$store.state.router.router_name==='menu'"></MenuView>
+    <PkIndexView v-else-if="$store.state.router.router_name==='pk'"></PkIndexView>
+    <RankListIndexView v-else-if="$store.state.router.router_name==='ranklist'"></RankListIndexView>
+    <RecordContentView v-else-if="$store.state.router.router_name==='record_content'"></RecordContentView>
+    <RecordIndexView v-else-if="$store.state.router.router_name==='record'"></RecordIndexView>
+    <UserBotIndexView v-else-if="$store.state.router.router_name==='user_bot'"></UserBotIndexView>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -17,6 +19,7 @@ import RankListIndexView from "./views/ranklist/RankListIndexView.vue";
 import RecordIndexView from "./views/record/RecordIndexView.vue";
 import RecordContentView from "./views/record/RecordContentView.vue";
 import UserBotIndexView from "./views/user/bots/UserBotIndexView.vue";
+import $ from 'jquery';
 
 
 export default{
@@ -30,11 +33,17 @@ export default{
 
  },
  setup(){
-  const jwt_token="eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5ZWFkZTFhZWZjZjA0YWQxOTMwNzE5N2QzYjJjOTA2MyIsInN1YiI6IjEiLCJpc3MiOiJzZyIsImlhdCI6MTcyNDIwNDgzOCwiZXhwIjoxNzI1NDE0NDM4fQ.sVMVn3dJiJf455EZkU93STdn3umTouECQn_lXzM_gC8";
   const store=useStore();
-        if(jwt_token){
-            //调用mutations函数使用commit
+  $.ajax({
+    url:"https://www.ljy5960.cn/api/user/account/acwing/acapp/apply_code/",
+    type:"get",
+    success:resp=>{
+      if(resp.result==="success"){
+        store.state.user.AcWingOS.api.oauth2.authorize(resp.appid, resp.redirect_uri, resp.scope, resp.state, resp=>{
+          if(resp.result==="success"){
+          //调用mutations函数使用commit
             //调用action函数用dispatch
+            const jwt_token=resp.jwt_token;
             store.commit("updateToken",jwt_token);
             store.dispatch("getinfo",{
                 success(){
@@ -44,17 +53,21 @@ export default{
                     store.commit("updatePullingInfo",false);
                 }
             })
-  
-        }else{
-            store.commit("updatePullingInfo",false);
-        }
-
- }
-}
+          }else{
+            store.state.user.AcWingOS.api.window.close();
+          }
+        });
+      }else{
+        store.state.user.AcWingOS.api.window.close();
+      }
+    }
+  })
+   }
+  }
 </script>
 
 
-<style scoped>
+<style>
 body{
   margin: 0;
 }

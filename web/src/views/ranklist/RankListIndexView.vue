@@ -1,22 +1,23 @@
 <template>
     <ContentField>
 
-        <table class="table table-hover" style="text-align: center;">
+        <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>玩家</th>
-                    <th>天梯分</th>
+                    <th style="text-align: center; padding-left: 0vw;">玩家</th>
+                    <th style="text-align: center; padding-right: 6vw;">天梯分</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="user in users" :key="user.id">
-                    <td>
-                        <img :src="user.photo" alt="" class="record-user-photo">
-                        <!-- nbsp是空格 -->
-                        &nbsp;
-                        <span class="record-user-username">{{user.username}}</span>
+                    <td style="text-align: center;">
+                        <div style="text-align: left; padding-left: 25vw;">
+                            <img :src="user.photo" alt="" class="record-user-photo">
+                             &nbsp; <!--//空格 -->
+                            <span class="record-user-username">{{ user.username }}</span>
+                        </div>
                     </td>
-                    <td>{{ user.rating }}</td>
+                    <td style="text-align: center; padding-right: 6vw;">{{ user.rating }}</td>
                 </tr>
             </tbody>
         </table>
@@ -77,7 +78,7 @@
             const pull_page=page=>{
                 current_page=page;
                 $.ajax({
-                    url:"https://app6957.acapp.acwing.com.cn/api/ranklist/getlist/",
+                    url:"https://www.ljy5960.cn/api/ranklist/getlist/",
                     data:{
                         page,
                     },

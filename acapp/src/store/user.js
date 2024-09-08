@@ -1,6 +1,7 @@
 import $ from 'jquery'
 export default{
     state: {
+        AcWingOS:"AcWingOS",
         id:"",
         username:"",
         photo:"",
@@ -38,7 +39,7 @@ export default{
         //data包括用户名密码
         //data是一个对象，用于传递登录所需的用户名和密码，以及处理成功和错误响应的回调函数。
         $.ajax({
-            url:"https://app6957.acapp.acwing.com.cn/api/user/account/token/",
+            url:"https://www.ljy5960.cn/api/user/account/token/",
             type:"post",
             data:{
                 username:data.username,
@@ -72,7 +73,7 @@ export default{
         },
         getinfo(context,data){
             $.ajax({
-                url:"https://app6957.acapp.acwing.com.cn/api/user/account/info/",
+                url:"https://www.ljy5960.cn/api/user/account/info/",
                 type:"get",
                 headers:{
                     Authorization:"Bearer "+context.state.token,

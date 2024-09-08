@@ -13,13 +13,13 @@
             </thead>
             <tbody>
                 <tr v-for="record in records" :key="record.record.id">
-                    <td>
+                    <td class="game-table-username1">
                         <img :src="record.a_photo" alt="" class="record-user-photo">
                         <!-- nbsp是空格 -->
                         &nbsp;
                         <span class="record-user-username">{{record.a_username}}</span>
                     </td>
-                    <td>
+                    <td class="game-table-username2">
                         <img :src="record.b_photo" alt="" class="record-user-photo">
                         &nbsp;
                         <span class="record-user-username">{{record.b_username}}</span>
@@ -90,7 +90,7 @@
             const pull_page=page=>{
                 current_page=page;
                 $.ajax({
-                    url:"https://app6957.acapp.acwing.com.cn/api/record/getlist/",
+                    url:"https://www.ljy5960.cn/api/record/getlist/",
                     data:{
                         page,
                     },
@@ -164,5 +164,13 @@
     img.record-user-photo{
         width: 5vh;
         border-radius: 50%;
+    }
+    .game-table-username1{
+        text-align: left;
+        padding-left: 9vw;
+    }
+    .game-table-username2{
+        text-align: left;
+        padding-left: 0vw;
     }
     </style>

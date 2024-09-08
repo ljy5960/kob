@@ -17,6 +17,11 @@
                 <div class="error-message">{{ error_message }}</div>
                 <button type="submit" class="btn btn-primary">登录</button>
              </form>
+             <div @click="acwing_login()" style="text-align: center; margin-top:20px; cursor:pointer;">
+                <img width="30px" src="https://cdn.acwing.com/media/article/image/2022/09/06/1_32f001fd2d-acwing_logo.png" alt="">
+                <br>
+                Acwing
+             </div>
         </div>
        </div>
     </ContentField>
@@ -28,6 +33,7 @@
     import { useStore } from 'vuex';
     import { ref } from 'vue';
     import router from "@/router";
+    import $ from "jquery";
     export default{
         components:{
             ContentField
@@ -77,11 +83,24 @@
       
         )//想调用action中的函数要用dispatch
         }
+        const acwing_login=()=>{
+            $.ajax({
+                url:"https://www.ljy5960.cn/api/user/account/acwing/web/apply_code/",
+                type:"get",
+                success:resp=>{
+                    if(resp.result==="success"){
+                    //重定向
+                    window.location.replace(resp.apply_code_url);
+                    }
+                }
+            })
+        }
         return {
             username,
             password,
             error_message,
             login, 
+            acwing_login
         }
         }
     }
