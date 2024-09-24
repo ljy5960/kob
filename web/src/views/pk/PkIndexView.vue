@@ -12,6 +12,7 @@ import PlayGround from "@/components/PlayGround.vue"
 import ResultBoard from "@/components/ResultBoard.vue"
 import { onMounted,onUnmounted } from "vue";
 import { useStore } from "vuex";
+
 // onMounted当组件被挂载时执行,当组件被卸载执行onUnmounted
 export default{
     components:{
